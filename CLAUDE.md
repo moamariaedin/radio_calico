@@ -13,9 +13,14 @@ Prototype online radio web app. No build pipeline, no frontend framework — kep
 ```
 npm install
 npm start
+npm test
 ```
 
-Serves on `http://localhost:3000`. There is no test suite, lint config, or build step — `npm start` is the only script.
+Serves on `http://localhost:3000`. There is no lint config or build step.
+
+## Tests
+
+Unit tests live in `test/*.test.js` and use Node's built-in `node:test` runner (`npm test` → `node --test`) — no test framework dependency. Each test file sets `RC_DB_PATH=':memory:'` before requiring `server/db.js`, so tests never touch `radio_calico.db`. `server/index.js` only calls `app.listen` when run directly (`require.main === module`) and exports `app`, so `test/server.test.js` binds it to a random port and hits the routes with `fetch`. `poll()` in `metadataPoller.js` takes an optional fetcher so tests can feed metadata without the network.
 
 ## Notes
 
@@ -28,6 +33,10 @@ server/
   index.js            # Express app, static serving, routes, starts poller on listen
   db.js               # schema (tracks, ratings) + query helpers — current-track voting only
   metadataPoller.js   # polls stream metadata every 15s; tracks current song + last-5 history (no DB)
+test/
+  db.test.js              # track creation, voting, one-vote-per-listener
+  metadataPoller.test.js  # buildHistory + poll/now-playing state (fake fetcher)
+  server.test.js          # cookie parsing, listener cookie, API routes
 public/
   index.html
   styles.css

@@ -48,9 +48,10 @@ function buildHistory(meta, currentArtist, currentTitle) {
   return history.slice(0, HISTORY_SIZE);
 }
 
-async function poll() {
+// `fetcher` is injectable so tests can poll without hitting the network.
+async function poll(fetcher = fetchMetadata) {
   try {
-    const meta = await fetchMetadata();
+    const meta = await fetcher();
     const { artist, title, album, date, bit_depth, sample_rate } = meta;
     if (!artist || !title) return;
 
@@ -75,7 +76,7 @@ async function poll() {
 
 function startPolling() {
   poll();
-  setInterval(poll, POLL_INTERVAL_MS);
+  setInterval(() => poll(), POLL_INTERVAL_MS);
 }
 
 function getNowPlaying(listenerId) {
@@ -105,4 +106,11 @@ function getHistory() {
   return currentHistory;
 }
 
-module.exports = { startPolling, getNowPlaying, getHistory };
+module.exports = {
+  startPolling,
+  getNowPlaying,
+  getHistory,
+  buildHistory,
+  poll,
+  COVER_ART_URL,
+};
