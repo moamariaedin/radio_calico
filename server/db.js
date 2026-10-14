@@ -1,7 +1,10 @@
 const path = require('path');
 const { DatabaseSync } = require('node:sqlite');
 
-const db = new DatabaseSync(path.join(__dirname, '..', 'radio_calico.db'));
+// RC_DB_PATH lets tests use an isolated database (e.g. ':memory:').
+const db = new DatabaseSync(
+  process.env.RC_DB_PATH || path.join(__dirname, '..', 'radio_calico.db')
+);
 
 db.exec('PRAGMA journal_mode = WAL');
 

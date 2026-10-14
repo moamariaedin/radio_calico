@@ -63,7 +63,12 @@ app.post('/api/tracks/:id/vote', (req, res) => {
   res.json({ trackId, rating: summary });
 });
 
-app.listen(PORT, () => {
-  console.log(`Radio Calico listening on http://localhost:${PORT}`);
-  startPolling();
-});
+// Only start the server when run directly, so tests can require the app.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Radio Calico listening on http://localhost:${PORT}`);
+    startPolling();
+  });
+}
+
+module.exports = { app, parseCookies, listenerIdMiddleware, LISTENER_COOKIE };
