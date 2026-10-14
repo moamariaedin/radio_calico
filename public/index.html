@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radio Calico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <span class="topbar__brand">Radio</span>
+      <img class="topbar__logo" src="images/radio-calico-logo.png" alt="Radio Calico logotyp" />
+      <span class="topbar__brand">Calico</span>
+    </div>
+  </header>
+
+  <main class="app">
+    <section class="now-playing">
+      <div class="now-playing__art">
+        <img id="cover-art" src="images/radio-calico-logo.png" alt="Skivomslag" />
+        <div class="equalizer" id="equalizer" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="now-playing__info">
+        <h1 class="track-artist" id="np-artist">Radio Calico</h1>
+        <h2 class="track-title" id="np-title">Startar strömmen&hellip;</h2>
+        <p class="track-album" id="np-album"></p>
+
+        <dl class="quality">
+          <div>
+            <dt>Source quality</dt>
+            <dd id="np-source-quality">&ndash;</dd>
+          </div>
+          <div>
+            <dt>Stream quality</dt>
+            <dd>48kHz FLAC / HLS Lossless</dd>
+          </div>
+        </dl>
+
+        <div class="rate-row">
+          <span>Rate this track:</span>
+          <button class="vote-btn" id="vote-up" aria-label="Gilla">👍 <span id="like-count">0</span></button>
+          <button class="vote-btn" id="vote-down" aria-label="Ogilla">👎 <span id="dislike-count">0</span></button>
+        </div>
+
+        <div class="player-bar">
+          <button class="play-btn" id="play-btn" aria-label="Spela/pausa">▶</button>
+          <span class="player-bar__time" id="player-time">Live</span>
+          <span class="player-bar__volume-icon">🔊</span>
+          <input type="range" id="volume-slider" min="0" max="100" value="80" />
+        </div>
+        <p class="status" id="status">Redo att spela</p>
+      </div>
+    </section>
+
+    <section class="history">
+      <h3>Previous tracks:</h3>
+      <ul class="history__list" id="history-list">
+        <li class="history__empty">Ingen historik ännu.</li>
+      </ul>
+    </section>
+  </main>
+
+  <audio id="audio" preload="none"></audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
